@@ -52,32 +52,32 @@ function loadTree () {
               types: {
                 "root": {
                   icon: {
-                    image: '/images/treeRoot.png'
+                    image: 'images/treeRoot.png'
                   }
                 },
                 "string": {
                   icon: {
-                    image: '/images/treeString.png'
+                    image: 'images/treeString.png'
                   }
                 },
                 "hash": {
                   icon: {
-                    image: '/images/treeHash.png'
+                    image: 'images/treeHash.png'
                   }
                 },
                 "set": {
                   icon: {
-                    image: '/images/treeSet.png'
+                    image: 'images/treeSet.png'
                   }
                 },
                 "list": {
                   icon: {
-                    image: '/images/treeList.png'
+                    image: 'images/treeList.png'
                   }
                 },
                 "zset": {
                   icon: {
-                    image: '/images/treeZSet.png'
+                    image: 'images/treeZSet.png'
                   }
                 }
               }
@@ -149,7 +149,7 @@ function treeNodeSelected (event, data) {
       data.forEach(function (instance) {
         if (instance.host == hostAndPort[0] && instance.port == hostAndPort[1]) {
           instance.connectionId = connectionId;
-          var html = new EJS({ url: '/templates/serverInfo.ejs' }).render(instance);
+          var html = new EJS({ url: 'templates/serverInfo.ejs' }).render(instance);
           $('#body').html(html);
           return setupAddKeyButton();
         }
@@ -210,7 +210,7 @@ function loadKey (connectionId, key, index) {
   }
 }
 function selectTreeNodeBranch (data) {
-  var html = new EJS({ url: '/templates/editBranch.ejs' }).render(data);
+  var html = new EJS({ url: 'templates/editBranch.ejs' }).render(data);
   $('#body').html(html);
 }
 function setupEditListButton () {
@@ -361,7 +361,7 @@ function setupEditHashButton () {
 }
 
 function selectTreeNodeString (data) {
-  var html = new EJS({ url: '/templates/editString.ejs' }).render(data);
+  var html = new EJS({ url: 'templates/editString.ejs' }).render(data);
   $('#body').html(html);
 
   try {
@@ -374,7 +374,7 @@ function selectTreeNodeString (data) {
   $('#stringValue').val(data.value);
   $('#jqtree_string_div').html(JSONTree.create(JSON.parse(data.value)));
   $('#stringValue').keyup(function () {
-    $('#stringValueClippy').clippy({'text': $(this).val(), clippy_path: "/clippy-jquery/clippy.swf"});
+    $('#stringValueClippy').clippy({'text': $(this).val(), clippy_path: "clippy-jquery/clippy.swf"});
     var dataTree;
     try {
       dataTree = JSONTree.create(JSON.parse($(this).val()));
@@ -412,12 +412,12 @@ function selectTreeNodeString (data) {
 }
 
 function selectTreeNodeHash (data) {
-  var html = new EJS({ url: '/templates/editHash.ejs' }).render(data);
+  var html = new EJS({ url: 'templates/editHash.ejs' }).render(data);
   $('#body').html(html);
 }
 
 function selectTreeNodeSet (data) {
-  var html = new EJS({ url: '/templates/editSet.ejs' }).render(data);
+  var html = new EJS({ url: 'templates/editSet.ejs' }).render(data);
   $('#body').html(html);
   $('#addSetMemberForm').ajaxForm({
     beforeSubmit: function () {
@@ -445,7 +445,7 @@ function selectTreeNodeSet (data) {
 
 function selectTreeNodeList (data) {
   if (data.items.length > 0) {
-    var html = new EJS({ url: '/templates/editList.ejs' }).render(data);
+    var html = new EJS({ url: 'templates/editList.ejs' }).render(data);
     $('#body').html(html);
     $('#addListValueForm').ajaxForm({
       beforeSubmit: function () {
@@ -476,7 +476,7 @@ function selectTreeNodeList (data) {
 
 function selectTreeNodeZSet (data) {
   if (data.items.length > 0) {
-    var html = new EJS({ url: '/templates/editZSet.ejs' }).render(data);
+    var html = new EJS({ url: 'templates/editZSet.ejs' }).render(data);
     $('#body').html(html);
   } else {
     alert('Index out of bounds');
@@ -888,7 +888,7 @@ function removeServer (connectionId) {
   }
   var result = confirm('Are you sure you want to disconnect from "' + connectionId + '"?');
   if (result) {
-    $.post('/logout/' + encodeURIComponent(connectionId), function (err, status) {
+    $.post('logout/' + encodeURIComponent(connectionId), function (err, status) {
       if (status != 'success') {
         return alert("Could not remove instance");
       }
@@ -952,7 +952,7 @@ function saveConfig () {
         "CLIOpen": CLIOpen,
         "default_connections": []
       };
-      $.post('/config', config, function (data, status) {
+      $.post('config', config, function (data, status) {
       });
     }
   });
