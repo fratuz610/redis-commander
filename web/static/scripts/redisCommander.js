@@ -936,13 +936,13 @@ function saveConfig () {
   var sidebarWidth = $('#sideBar').width();
   var locked = !$('#lockCommandButton').hasClass('disabled');
   var CLIHeight = $('#commandLineContainer').height();
-  $.get('/config', function (config) {
+  $.get('config', function (config) {
     if (config) {
       config["sidebarWidth"] = sidebarWidth;
       config["locked"] = locked;
       config["CLIHeight"] = CLIHeight;
       config["CLIOpen"] = CLIOpen;
-      $.post('/config', config, function (data, status) {
+      $.post('config', config, function (data, status) {
       });
     } else {
       var config = {
@@ -958,7 +958,7 @@ function saveConfig () {
   });
 }
 function loadConfig (callback) {
-  $.get('/config', function (data) {
+  $.get('config', function (data) {
     if (data) {
       if (data['sidebarWidth']) {
         $('#sideBar').width(data['sidebarWidth']);
@@ -1085,7 +1085,7 @@ $(function() {
    * Export redis data.
    */
   $('#app-container').on('submit', '#redisExportForm', function () {
-    window.open("/tools/export?" + $(this).serialize(), '_blank');
+    window.open("tools/export?" + $(this).serialize(), '_blank');
     return false;
   });
 
@@ -1097,7 +1097,7 @@ $(function() {
 
     $.ajax({
       type: 'POST',
-      url: '/tools/import',
+      url: 'tools/import',
       data: $(this).serialize(),
       dataType: 'JSON',
       success: function (res) {
@@ -1117,7 +1117,7 @@ $(function() {
   $('#redisImportData').on('click', function () {
     $.ajax({
       type: 'POST',
-      url: '/tools/forms/import',
+      url: 'tools/forms/import',
       success: function (res) {
         $('#body').html(res);
       }
@@ -1130,7 +1130,7 @@ $(function() {
   $('#redisExportData').on('click', function () {
     $.ajax({
       type: 'POST',
-      url: '/tools/forms/export',
+      url: 'tools/forms/export',
       success: function (res) {
         $('#body').html(res);
       }
