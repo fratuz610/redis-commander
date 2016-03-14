@@ -3,7 +3,7 @@ var foldingCharacter = ":";
 
 var CmdParser = require('cmdparser');
 function loadTree () {
-  $.get('/apiv1/connection', function (isConnected) {
+  $.get('apiv1/connection', function (isConnected) {
     if (isConnected) {
       $('#keyTree').bind("loaded.jstree", function () {
         var tree = getKeyTree();
@@ -41,10 +41,10 @@ function loadTree () {
                   if (node !== -1) {
                     var path = getFullKeyPath(node);
                     var root = getRootConnection(node);
-                    return '/apiv1/keystree/' + encodeURIComponent(root) + '/' + encodeURIComponent(path) + '?absolute=false';
+                    return 'apiv1/keystree/' + encodeURIComponent(root) + '/' + encodeURIComponent(path) + '?absolute=false';
                   }
                   var root = getRootConnection(node);
-                  return '/apiv1/keystree/' + encodeURIComponent(root);
+                  return 'apiv1/keystree/' + encodeURIComponent(root);
                 }
               }
             },
@@ -141,7 +141,7 @@ function treeNodeSelected (event, data) {
   var connectionId = pathParts.slice(0, 1)[0];
   if (pathParts.length === 1) {
     var hostAndPort = pathParts[0].split(':');
-    $.get('/apiv1/server/info', function (data, status) {
+    $.get('apiv1/server/info', function (data, status) {
       if (status != 'success') {
         return alert("Could not load server info");
       }
@@ -170,9 +170,9 @@ function getRootConnection (node) {
 
 function loadKey (connectionId, key, index) {
   if (index) {
-    $.get('/apiv1/key/' + encodeURIComponent(connectionId) + "/" + encodeURIComponent(key) + "/" + index, processData);
+    $.get('apiv1/key/' + encodeURIComponent(connectionId) + "/" + encodeURIComponent(key) + "/" + index, processData);
   } else {
-    $.get('/apiv1/key/' + encodeURIComponent(connectionId) + "/" + encodeURIComponent(key), processData);
+    $.get('apiv1/key/' + encodeURIComponent(connectionId) + "/" + encodeURIComponent(key), processData);
   }
   function processData (data, status) {
     if (status != 'success') {
@@ -295,7 +295,7 @@ function setupEditZSetButton () {
 
 function setupAddKeyButton (connectionId) {
   $('#keyValue').keyup(function () {
-    var action = "/apiv1/key/" + encodeURIComponent(connectionId) + "/" + encodeURIComponent($(this).val());
+    var action = "apiv1/key/" + encodeURIComponent(connectionId) + "/" + encodeURIComponent($(this).val());
     $('#addKeyForm').attr("action", action);
   });
   $('#keyType').change(function () {
@@ -500,7 +500,7 @@ function addKey (connectionId, key) {
     var pathParts = getKeyTree().get_path(connectionId, true);
     connectionId = pathParts.slice(0, 1)[0];
   }
-  $('#addKeyForm').attr('action', '/apiv1/key/' + encodeURIComponent(connectionId) + "/" + encodeURIComponent(key));
+  $('#addKeyForm').attr('action', 'apiv1/key/' + encodeURIComponent(connectionId) + "/" + encodeURIComponent(key));
   $('#keyValue').val(key);
   $('#addKeyModal').modal('show');
   setupAddKeyButton(connectionId);
@@ -513,7 +513,7 @@ function deleteKey (connectionId, key) {
   }
   var result = confirm('Are you sure you want to delete "' + key + ' from ' + connectionId + '"?');
   if (result) {
-    $.post('/apiv1/key/' + encodeURIComponent(connectionId) + '/' + encodeURIComponent(key) + '?action=delete', function (data, status) {
+    $.post('apiv1/key/' + encodeURIComponent(connectionId) + '/' + encodeURIComponent(key) + '?action=delete', function (data, status) {
       if (status != 'success') {
         return alert("Could not delete key");
       }
@@ -530,7 +530,7 @@ function deleteBranch (connectionId, branchPrefix) {
   var query = branchPrefix + ':*';
   var result = confirm('Are you sure you want to delete "' + query + ' from ' + connectionId + '"? This will delete all children as well!');
   if (result) {
-    $.post('/apiv1/keys/' + encodeURIComponent(connectionId) + "/" + encodeURIComponent(query) + '?action=delete', function (data, status) {
+    $.post('apiv1/keys/' + encodeURIComponent(connectionId) + "/" + encodeURIComponent(query) + '?action=delete', function (data, status) {
       if (status != 'success') {
         return alert("Could not delete branch");
       }
@@ -669,7 +669,7 @@ function loadCommandLine () {
       refreshTree();
       rl.write("OK");
     } else {
-      $.post('/apiv1/exec', { cmd: line, connection: $('#selectedConnection').val() }, function (data, status) {
+      $.post('apiv1/exec', { cmd: line, connection: $('#selectedConnection').val() }, function (data, status) {
         rl.prompt();
 
         if (status != 'success') {
@@ -856,7 +856,7 @@ var cmdparser = new CmdParser([
 ], {
   key: function (partial, callback) {
     var redisConnection = $('#selectedConnection').val();
-    $.get('/apiv1/keys/' + encodeURIComponent(redisConnection) + "/" + partial + '*?limit=20', function (data, status) {
+    $.get('apiv1/keys/' + encodeURIComponent(redisConnection) + "/" + partial + '*?limit=20', function (data, status) {
       if (status != 'success') {
         return callback(new Error("Could not get keys"));
       }
@@ -876,7 +876,7 @@ var prevCLIOpen;
 var configLoaded = false;
 
 function getServerInfo (callback) {
-  $.get('/apiv1/server/info', function (data, status) {
+  $.get('apiv1/server/info', function (data, status) {
     callback(JSON.parse(data))
   });
 }
